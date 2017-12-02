@@ -11,7 +11,7 @@ class ListItem extends Component {
   }
 
   goToResult() {
-    console.log(this.props.text)
+    store.setSearchKey(this.props.text)
     store.setShowType('RESULT')
   }
 

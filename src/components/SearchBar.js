@@ -13,6 +13,9 @@ export default @observer class SearchBar extends Component {
 
   focusTextInput () {
     this.inputEl.focus()
+    store.setShowType()
+    // TODO: 这里直接请求一次有点粗暴，多次点击有问题
+    store.fetchSuggest()
     // this.props.store.fetchLength(3)
   }
 
@@ -38,6 +41,7 @@ export default @observer class SearchBar extends Component {
       <div>
         <input
           type='text'
+          value={store.searchKey}
           ref={text => this.inputEl = text}
           onClick={this.focusTextInput}
           onInput={this.changeSearchKey} />

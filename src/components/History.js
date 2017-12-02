@@ -3,16 +3,26 @@ import { observer } from 'mobx-react'
 import store from '../store/search'
 
 class ListItem extends Component {
+  constructor(props) {
+    super(props)
+    this.showResult = this.showResult.bind(this)
+  }
+
+  showResult(key) {
+    store.setShowType('RESULT')
+    store.setSearchKey(key)
+  }
   render () {
     return (
-      <li>
+      <li onClick={() =>{ this.showResult(this.props.text) }}>
         {this.props.text}
       </li>
     )
   }
 }
 
-export default @observer class History extends Component {
+@observer
+export default class History extends Component {
   constructor (props) {
     super(props)
     this.state = {

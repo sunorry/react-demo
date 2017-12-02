@@ -1,9 +1,10 @@
 import { observable, computed, action, runInAction } from 'mobx'
 
 class Count {
-    @observable suggestList = []
-    @observable searchKey = ''
-    @observable suggestFectched = false
+    @observable showType = 'INIT' // 显示的 ‘INIT’ 'RESULT'
+    @observable suggestList = []  // 搜索建议
+    @observable searchKey = '' // input 值
+    @observable suggestFectched = false // 用于展示无搜索结果
 
     @computed get showHistory() {
         return this.suggestList.length && this.searchKey.length
@@ -11,6 +12,11 @@ class Count {
 
     @computed get showNoSuggest() {
         return this.suggestFectched && !this.suggestList.length && this.searchKey.length
+    }
+
+    @action
+    setShowType(type = 'init') {
+        this.showType = type
     }
 
     @action

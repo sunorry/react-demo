@@ -3,17 +3,29 @@ import React, { Component } from 'react'
 import store from '../store/search'
 import { observer } from 'mobx-react'
 
+@observer
 class ListItem extends Component {
+  constructor(props) {
+    super(props)
+    this.goToResult = this.goToResult.bind(this)
+  }
+
+  goToResult() {
+    console.log(this.props.text)
+    store.setShowType('RESULT')
+  }
+
   render () {
     return (
-      <li>
+      <li onClick={this.goToResult}>
         {this.props.text}
       </li>
     )
   }
 }
 
-export default @observer class Suggest extends Component {
+@observer
+export default class Suggest extends Component {
   render () {
     const listItems = store.suggestList.map(text => <ListItem key={text + 'suggest'} text={text} />)
     return (

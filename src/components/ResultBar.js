@@ -10,11 +10,12 @@ export default class ResultBar extends Component {
     }
 
     goToDetail(item) {
-        console.log(item.key, item.text)
+        store.setResultCurrent(item.key)
+        // store.fetchResultList(item.key)
     }
     render() {
         const list = store.resultBar.map((item) => {
-            return <li key={item.key} onClick={() => { this.goToDetail(item) }}>{item.text}</li>
+            return <li key={item.key} className={store.resultCurrent === item.key ? 'current' : '' } onClick={() => { this.goToDetail(item) }}>{item.text}</li>
         })
         return (
             <ul>{list}</ul>

@@ -10,7 +10,7 @@ class ListItem extends Component {
 
   showResult(key) {
     store.setShowType('RESULT')
-    store.setSearchKey(key)
+    store.syncSearchKey(key)
     store.fetchResultBar()
   }
   render () {

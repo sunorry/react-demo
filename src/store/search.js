@@ -5,10 +5,11 @@ class Count {
     @observable suggestList = []  // 搜索建议
     @observable searchKey = '' // input 值
     @observable suggestFectched = false // 用于展示无搜索结果
-    @observable resultBar = []
-    @observable resultRecommend = []
-    @observable resultHos = []
-    @observable resultDepts = []
+    @observable resultBar = [] // 分类
+    @observable resultCurrent = '' // 当前选中的分类
+    @observable resultRecommend = [] // 推荐
+    @observable resultHos = [] // 医院
+    @observable resultDepts = [] // 科室
 
     @computed get showHistory() {
         return this.suggestList.length && this.searchKey.length
@@ -18,14 +19,24 @@ class Count {
         return this.suggestFectched && !this.suggestList.length && this.searchKey.length
     }
 
+    // 同步输入框内容 | 点击建议或者历史同步内容
     @action
-    setSearchKey(key) {
-        this.searchKey = key
+    syncSearchKey(searchKey) {
+        this.searchKey = searchKey
     }
 
     @action
     setShowType(type = 'INIT') {
         this.showType = type
+    }
+
+    // 点击 ResultBar
+    @action
+    setResultCurrent(key) {
+        if(this.resultCurrent !== key) {
+            this.resultCurrent = key
+            this.fetchResultList(key)
+        }
     }
 
     @action
@@ -40,11 +51,7 @@ class Count {
         })
     }
 
-    @action
-    syncSearchKey(searchKey) {
-        this.searchKey = searchKey
-    }
-
+    // 请求结果可选 tab
     @action
     fetchResultBar() {
         setTimeout(() => {
@@ -59,20 +66,24 @@ class Count {
                     text: '科室',
                     key: 'depts'
                 }]
+                this.resultCurrent = this.resultBar[0]['key']
                 this.fetchResultList()
             })
-        }, 1000)
+        }, 200)
     }
 
+    // 请求tab对应列表
     @action
     fetchResultList(type) {
         setTimeout(() => {
             runInAction(() => {
                 switch (type) {
                     case 'hos':
-                        return [1, 2, 3, 4]
+                        this.resultHos = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
+                        return
                     case 'depts':
-                        return [5, 6, 7, 8]
+                        this.resultDepts = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]
+                        return
                     default:
                         this.resultRecommend = [9, 10, 11, 12]
                 }

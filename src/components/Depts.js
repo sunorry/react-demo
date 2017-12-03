@@ -26,7 +26,7 @@ export default class Depts extends Component {
             return <List key={item.code} info={item}></List>
         })
         return (
-            <ul>{list}</ul>
+            <ul style={{ display: store.resultCurrent === 'depts' ? 'block' : 'none' }}>{list}</ul>
         );
     }
 }

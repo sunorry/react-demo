@@ -17,7 +17,7 @@ export default class ResultBar extends Component {
             return <li key={item} onClick={() => { this.goToDetail(item) }}>{item}</li>
         })
         return (
-            <ul>{list}</ul>
+            <ul style={{ display: store.resultCurrent === 'recommend' ? 'block' : 'none' }}>{list}</ul>
         );
     }
 }

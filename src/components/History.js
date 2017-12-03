@@ -11,6 +11,7 @@ class ListItem extends Component {
   showResult(key) {
     store.setShowType('RESULT')
     store.setSearchKey(key)
+    store.fetchResultBar()
   }
   render () {
     return (

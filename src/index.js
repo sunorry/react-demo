@@ -9,6 +9,9 @@ import History from './components/History'
 import Suggest from './components/Suggest'
 import NoSuggess from './components/NoSuggest'
 
+import ResultBar from './components/ResultBar'
+import Recommand from './components/Recommand'
+
 import store from './store/search'
 
 useStrict(true)
@@ -27,7 +30,8 @@ class App extends React.Component {
           </div>
         </div>
         <div style={{ display: store.showType === 'RESULT' ? 'block' : 'none' }}>
-          结果
+          <ResultBar />
+          <Recommand />
         </div>
         <DevTools />
       </div>

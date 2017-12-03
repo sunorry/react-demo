@@ -13,6 +13,7 @@ class ListItem extends Component {
   goToResult() {
     store.setSearchKey(this.props.text)
     store.setShowType('RESULT')
+    store.fetchResultBar()
   }
 
   render () {

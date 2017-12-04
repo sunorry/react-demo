@@ -7,6 +7,7 @@ const CFG_PAGE = {
 }
 
 class Count {
+    cacheKey = '' // 请求 list 的 searchKey，当 searchKey 改变的时候，会 reset list，重新请求，可以说很有种的状态位了，暂时先不用
     @observable showType = 'INIT' // 显示的 ‘INIT’ 'RESULT'
     @observable suggestList = []  // 搜索建议
     @observable searchKey = '' // input 值
@@ -14,7 +15,7 @@ class Count {
     @observable resultBar = [] // 分类
     @observable resultCurrent = '' // 当前选中的分类
     // FIXME: result_xxx 也应该动态添加和删除，这是最好的方法，目前没有这么稿，因为每个 resultBar 对应的模块都需手动加（HTML CSS）
-    // 推荐, 不分页
+    // 推荐, 不分
     @observable result_recommend = {
         list: [],
         fetched: false
@@ -118,7 +119,7 @@ class Count {
                         total = 2
                         break;
                     default:
-                        list = [9, 10, 11, 12]
+                        list = [9, 10, 11, Math.random()]
                 }
                 this.setListData(key, {
                     list,
@@ -165,6 +166,20 @@ class Count {
         }
 
         return data
+    }
+
+    @action
+    resetList() {
+        this.resultBar = []
+        this.resultCurrent = ''
+        this.result_recommend.list = []
+        this.result_recommend.fetched = false
+        this.result_hos.list = []
+        this.result_hos.pager = Object.assign({}, CFG_PAGE)
+        this.result_hos.fetched = false
+        this.result_depts.list = []
+        this.result_depts.pager = Object.assign({}, CFG_PAGE)
+        this.result_depts.fetched = false
     }
 }
 

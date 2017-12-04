@@ -12,16 +12,19 @@ class Count {
     @observable suggestFectched = false // 用于展示无搜索结果
     @observable resultBar = [] // 分类
     @observable resultCurrent = '' // 当前选中的分类
+    // FIXME: result_xxx 也应该动态添加和删除，这是最好的方法，目前没有这么稿，因为每个 resultBar 对应的模块都需手动加（HTML CSS）
     // 推荐, 不分页
-    @observable resultRecommend = []
+    @observable result_recommend = {
+        list: []
+    }
     // 医院
-    @observable resultHos = {
+    @observable result_hos = {
         list: [],
         pager: Object.assign({}, CFG_PAGE),
         fetched: false
     }
     // 科室
-    @observable resultDepts = {
+    @observable result_depts = {
         list: [],
         pager: Object.assign({}, CFG_PAGE),
         fetched: false
@@ -96,25 +99,44 @@ class Count {
         // getFetchParams
         setTimeout(() => {
             runInAction(() => {
+                var list,
+                    total;
                 switch (type) {
                     case 'hos':
-                        this.resultHos.list = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
-                        this.resultHos.pager.current = 1
-                        this.resultHos.pager.total = 3
-                        this.resultHos.fetched = true
-                        return
+                        list = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
+                        total = 3
+                        break;
                     case 'depts':
-                        this.resultDepts.list = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]
-                        this.resultDepts.pager.current = 1
-                        this.resultDepts.total = 2
-                        this.resultDepts.fetched = true
-                        return
+                        list = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]
+                        total = 2
+                        break;
                     default:
-                        this.resultRecommend = [9, 10, 11, 12]
+                        list = [9, 10, 11, 12]
                 }
+                this.setListData(type, {
+                    list,
+                    total
+                })
             }, 1000)
         })
     }
+
+    @action
+    setListData(type = 'recommend', data) {
+        switch (type) {
+            case 'recommend':
+                break;
+            default:
+                this['result_' + type]['pager']['current'] = 1
+                this['result_' + type]['pager']['total'] = data['total']
+                this['result_' + type]['fetched'] = true
+        }
+        this['result_' + type]['list'] = data['list']
+    }
+
+    // dealFetchParams(type) {
+
+    // }
 }
 
 export default new Count()

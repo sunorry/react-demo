@@ -13,7 +13,7 @@ export default class ResultBar extends Component {
         console.log(item)
     }
     render() {
-        const list = store.resultRecommend.map((item) => {
+        const list = store.result_recommend.list.map((item) => {
             return <li key={item} onClick={() => { this.goToDetail(item) }}>{item}</li>
         })
         return (

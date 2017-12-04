@@ -22,7 +22,7 @@ class List extends Component {
 @observer
 export default class Hospital extends Component {
     render() {
-        const list = store.resultHos.list.map(item => {
+        const list = store.result_hos.list.map(item => {
             return <List key={item.code} info={item}></List>
         })
         return (

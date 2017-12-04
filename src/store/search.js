@@ -1,5 +1,10 @@
 import { observable, computed, action, runInAction } from 'mobx'
 
+const CFG_PAGE = {
+    current: 0,
+    total: 0
+}
+
 class Count {
     @observable showType = 'INIT' // 显示的 ‘INIT’ 'RESULT'
     @observable suggestList = []  // 搜索建议
@@ -7,9 +12,20 @@ class Count {
     @observable suggestFectched = false // 用于展示无搜索结果
     @observable resultBar = [] // 分类
     @observable resultCurrent = '' // 当前选中的分类
-    @observable resultRecommend = [] // 推荐
-    @observable resultHos = [] // 医院
-    @observable resultDepts = [] // 科室
+    // 推荐, 不分页
+    @observable resultRecommend = []
+    // 医院
+    @observable resultHos = {
+        list: [],
+        pager: Object.assign({}, CFG_PAGE),
+        fetched: false
+    }
+    // 科室
+    @observable resultDepts = {
+        list: [],
+        pager: Object.assign({}, CFG_PAGE),
+        fetched: false
+    }
 
     @computed get showHistory() {
         return this.suggestList.length && this.searchKey.length
@@ -75,14 +91,23 @@ class Count {
     // 请求tab对应列表
     @action
     fetchResultList(type) {
+        // TODO: 1. 添加缓存逻辑，如果某个 searchKey 已经请求过，直接显示
+        // TODO: 2. 添加分页逻辑判断，如果已经是最后一页直接 return，推荐模块不分页
+        // getFetchParams
         setTimeout(() => {
             runInAction(() => {
                 switch (type) {
                     case 'hos':
-                        this.resultHos = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
+                        this.resultHos.list = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
+                        this.resultHos.pager.current = 1
+                        this.resultHos.pager.total = 3
+                        this.resultHos.fetched = true
                         return
                     case 'depts':
-                        this.resultDepts = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]
+                        this.resultDepts.list = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]
+                        this.resultDepts.pager.current = 1
+                        this.resultDepts.total = 2
+                        this.resultDepts.fetched = true
                         return
                     default:
                         this.resultRecommend = [9, 10, 11, 12]

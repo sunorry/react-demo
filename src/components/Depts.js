@@ -22,7 +22,7 @@ class List extends Component {
 @observer
 export default class Depts extends Component {
     render() {
-        const list = store.resultDepts.map(item => {
+        const list = store.resultDepts.list.map(item => {
             return <List key={item.code} info={item}></List>
         })
         return (

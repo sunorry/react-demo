@@ -10,7 +10,7 @@ class List extends Component {
     }
 
     goToDetail() {
-        console.log(this.props.text, this.props.code)
+        console.log(this.props.info.text, this.props.info.code)
     }
     render() {
         return (

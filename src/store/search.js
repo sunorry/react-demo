@@ -1,7 +1,8 @@
 import { observable, computed, action, runInAction } from 'mobx'
 
 const CFG_PAGE = {
-    current: 0,
+    pageSize: 10,
+    current: 1,
     total: 0
 }
 
@@ -15,7 +16,8 @@ class Count {
     // FIXME: result_xxx 也应该动态添加和删除，这是最好的方法，目前没有这么稿，因为每个 resultBar 对应的模块都需手动加（HTML CSS）
     // 推荐, 不分页
     @observable result_recommend = {
-        list: []
+        list: [],
+        fetched: false
     }
     // 医院
     @observable result_hos = {
@@ -50,6 +52,9 @@ class Count {
     }
 
     // 点击 ResultBar
+    // FIXME: 之所以点击判断放在这里
+    // 1. 组件不做判断
+    // 2. 上面成立的情况下，下面的请求写在这里就有点恶心了。。。。
     @action
     setResultCurrent(key) {
         if(this.resultCurrent !== key) {
@@ -86,22 +91,24 @@ class Count {
                     key: 'depts'
                 }]
                 this.resultCurrent = this.resultBar[0]['key']
-                this.fetchResultList()
+                this.fetchResultList(this.resultCurrent)
             })
         }, 200)
     }
 
     // 请求tab对应列表
     @action
-    fetchResultList(type) {
+    fetchResultList(key, type) {
         // TODO: 1. 添加缓存逻辑，如果某个 searchKey 已经请求过，直接显示
-        // TODO: 2. 添加分页逻辑判断，如果已经是最后一页直接 return，推荐模块不分页
+        //  2. 添加分页逻辑判断，如果已经是最后一页直接 return，推荐模块不分页
         // getFetchParams
+        const { needFetch, current } =  this.getFetchParams(key, type)
+        if(!needFetch) return
         setTimeout(() => {
             runInAction(() => {
                 var list,
                     total;
-                switch (type) {
+                switch (key) {
                     case 'hos':
                         list = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
                         total = 3
@@ -113,7 +120,7 @@ class Count {
                     default:
                         list = [9, 10, 11, 12]
                 }
-                this.setListData(type, {
+                this.setListData(key, {
                     list,
                     total
                 })
@@ -122,21 +129,43 @@ class Count {
     }
 
     @action
-    setListData(type = 'recommend', data) {
-        switch (type) {
+    setListData(key = 'recommend', data) {
+        switch (key) {
             case 'recommend':
                 break;
             default:
-                this['result_' + type]['pager']['current'] = 1
-                this['result_' + type]['pager']['total'] = data['total']
-                this['result_' + type]['fetched'] = true
+                this['result_' + key]['pager']['current'] = 1
+                this['result_' + key]['pager']['total'] = data['total']
         }
-        this['result_' + type]['list'] = data['list']
+        this['result_' + key]['fetched'] = true
+        this['result_' + key]['list'] = data['list']
     }
 
-    // dealFetchParams(type) {
+    // 判断是翻页
+    // type : init/more 业务中传的是加载更多还是第一次加载
+    getFetchParams(key, type = 'init') {
+        const data = {
+            needFetch: true,
+            current: 1
+        }
+        const { fetched, pager} = this['result_' + key]
 
-    // }
+        if(type === 'init') {
+            if(fetched) {
+                data.needFetch = false
+            }
+        } else {
+            if (pager) {
+                if (pager.pageSize * pager.current < pager.total) {
+                    data.current = pager.current + 1
+                } else {
+                    data.needFetch = false
+                }
+            }
+        }
+
+        return data
+    }
 }
 
 export default new Count()

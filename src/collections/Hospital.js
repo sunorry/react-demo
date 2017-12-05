@@ -17,7 +17,7 @@ export default class Hospital extends Component {
 
     render() {
         return (
-            <ResultList list={store.result_hos.list}
+            <ResultList list={store.resultHos.list}
                   show={store.resultCurrent === 'hos'}
                   goDetail={this.goDetail}
             />

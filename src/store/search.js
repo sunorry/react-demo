@@ -1,10 +1,6 @@
 import { observable, computed, action, runInAction } from 'mobx'
-
-const CFG_PAGE = {
-    pageSize: 10,
-    current: 1,
-    total: 0
-}
+import { suggest, barList, historyList, hosList, deptsList, getCommendList, CFG_PAGE } from './mockData.js'
+import { getFirstLetterUpper } from '../tools/utils'
 
 class Count {
     cacheKey = '' // 请求 list 的 searchKey，当 searchKey 改变的时候，会 reset list，重新请求，可以说很有种的状态位了，暂时先不用
@@ -17,18 +13,18 @@ class Count {
     @observable resultCurrent = '' // 当前选中的分类
     // FIXME: result_xxx 也应该动态添加和删除，这是最好的方法，目前没有这么稿，因为每个 resultBar 对应的模块都需手动加（HTML CSS）
     // 推荐, 不分页
-    @observable result_recommend = {
+    @observable resultRecommend = {
         list: [],
         fetched: false
     }
     // 医院
-    @observable result_hos = {
+    @observable resultHos = {
         list: [],
         pager: Object.assign({}, CFG_PAGE),
         fetched: false
     }
     // 科室
-    @observable result_depts = {
+    @observable resultDepts = {
         list: [],
         pager: Object.assign({}, CFG_PAGE),
         fetched: false
@@ -69,7 +65,7 @@ class Count {
     fetchHistory() {
         setTimeout(() => {
             runInAction(() => {
-                this.historyList = ['头痛门诊', 'DO MORE', 'Casey Neistat']
+                this.historyList = historyList
             })
         }, 300)
     }
@@ -79,8 +75,7 @@ class Count {
         if(!this.searchKey) return
         setTimeout(() => {
             runInAction(() => {
-                this.suggestList = Math.random() > 0.5 ? ['神经病理性疼痛专病·门诊', '疼痛门诊(西区)', '疼痛与睡眠专病门诊', '疼痛科专家门诊', '功能神外疼痛专病门诊', '头痛与神经性疼痛', '疼痛科专病门诊', '麻醉疼痛科', '骨质疏松与疼痛专病门诊', '慢性疼痛疾病知名专家团队'] : []
-                console.log(this.suggestList.length)
+                this.suggestList = Math.random() > 0.5 ? suggest : []
                 this.suggestFectched = true
             })
         })
@@ -91,16 +86,7 @@ class Count {
     fetchResultBar() {
         setTimeout(() => {
             runInAction(() => {
-                this.resultBar = [{
-                    text: '推荐',
-                    key: 'recommend'
-                }, {
-                    text: '医院',
-                    key: 'hos'
-                }, {
-                    text: '科室',
-                    key: 'depts'
-                }]
+                this.resultBar = barList
                 this.resultCurrent = this.resultBar[0]['key']
                 this.fetchResultList(this.resultCurrent)
             })
@@ -121,15 +107,15 @@ class Count {
                     total;
                 switch (key) {
                     case 'hos':
-                        list = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
+                        list = hosList
                         total = 3
                         break;
                     case 'depts':
-                        list = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]
+                        list = deptsList
                         total = 2
                         break;
                     default:
-                        list = [{ code: 1, text: 9}, { code: 10, text: 10 }, {code: 11, text: 11 }, { code: 12, text: Math.random()}]
+                        list = getCommendList()
                 }
                 this.setListData(key, {
                     list,
@@ -141,25 +127,27 @@ class Count {
 
     @action
     setListData(key = 'recommend', data) {
+        const usedKey = getFirstLetterUpper(key)
         switch (key) {
             case 'recommend':
                 break;
             default:
-                this['result_' + key]['pager']['current'] = 1
-                this['result_' + key]['pager']['total'] = data['total']
+                this['result' + usedKey]['pager']['current'] = 1
+                this['result' + usedKey]['pager']['total'] = data['total']
         }
-        this['result_' + key]['fetched'] = true
-        this['result_' + key]['list'] = data['list']
+        this['result' + usedKey]['fetched'] = true
+        this['result' + usedKey]['list'] = data['list']
     }
 
     // 判断是翻页
     // type : init/more 业务中传的是加载更多还是第一次加载
     getFetchParams(key, type = 'init') {
+        const usedKey = getFirstLetterUpper(key)
         const data = {
             needFetch: true,
             current: 1
         }
-        const { fetched, pager} = this['result_' + key]
+        const { fetched, pager} = this['result' + usedKey]
 
         if(type === 'init') {
             if(fetched) {
@@ -182,14 +170,14 @@ class Count {
     resetList() {
         this.resultBar = []
         this.resultCurrent = ''
-        this.result_recommend.list = []
-        this.result_recommend.fetched = false
-        this.result_hos.list = []
-        this.result_hos.pager = Object.assign({}, CFG_PAGE)
-        this.result_hos.fetched = false
-        this.result_depts.list = []
-        this.result_depts.pager = Object.assign({}, CFG_PAGE)
-        this.result_depts.fetched = false
+        this.resultRecommend.list = []
+        this.resultRecommend.fetched = false
+        this.resultHos.list = []
+        this.resultHos.pager = Object.assign({}, CFG_PAGE)
+        this.resultHos.fetched = false
+        this.resultDepts.list = []
+        this.resultDepts.pager = Object.assign({}, CFG_PAGE)
+        this.resultDepts.fetched = false
     }
 }
 

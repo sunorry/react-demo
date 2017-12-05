@@ -16,7 +16,7 @@ export default class ResultBar extends Component {
     }
     render() {
         return (
-            <ResultList list={store.result_recommend.list}
+            <ResultList list={store.resultRecommend.list}
                 show={store.resultCurrent === 'recommend'}
                 goDetail={this.goDetail}
             />

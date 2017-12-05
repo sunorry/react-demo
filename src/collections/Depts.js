@@ -17,7 +17,7 @@ export default class Depts extends Component {
 
     render() {
         return (
-            <ResultList list={store.result_depts.list}
+            <ResultList list={store.resultDepts.list}
                 show={store.resultCurrent === 'depts'}
                 goDetail={this.goDetail}
             />

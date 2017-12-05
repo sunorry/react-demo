@@ -8,10 +8,10 @@ import ResultList from '../components/ResultList'
 export default class ResultBar extends Component {
     constructor(props) {
         super(props)
-        this.goToDetail = this.goToDetail.bind(this)
+        this.goDetail = this.goDetail.bind(this)
     }
 
-    goToDetail(item) {
+    goDetail(item) {
         console.log(item.code, item.text)
     }
     render() {

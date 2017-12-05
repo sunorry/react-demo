@@ -16,7 +16,7 @@ class Count {
     @observable resultBar = [] // 分类
     @observable resultCurrent = '' // 当前选中的分类
     // FIXME: result_xxx 也应该动态添加和删除，这是最好的方法，目前没有这么稿，因为每个 resultBar 对应的模块都需手动加（HTML CSS）
-    // 推荐, 不分
+    // 推荐, 不分页
     @observable result_recommend = {
         list: [],
         fetched: false

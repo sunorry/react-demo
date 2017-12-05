@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import store from '../store/search'
 
+import ResultList from '../components/ResultList'
+
 @observer
 export default class ResultBar extends Component {
     constructor(props) {
@@ -10,15 +12,14 @@ export default class ResultBar extends Component {
     }
 
     goToDetail(item) {
-        store.setResultCurrent(item.key)
-        // store.fetchResultList(item.key)
+        console.log(item.code, item.text)
     }
     render() {
-        const list = store.resultBar.map((item) => {
-            return <li key={item.key} className={store.resultCurrent === item.key ? 'current' : '' } onClick={() => { this.goToDetail(item) }}>{item.text}</li>
-        })
         return (
-            <ul>{list}</ul>
+            <ResultList list={store.result_recommend.list}
+                show={store.resultCurrent === 'recommend'}
+                goDetail={this.goDetail}
+            />
         );
     }
 }

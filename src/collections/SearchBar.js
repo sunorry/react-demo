@@ -4,7 +4,6 @@ import { observer } from 'mobx-react'
 import store from '../store/search'
 
 export default @observer class SearchBar extends Component {
-
   constructor (props) {
     super(props)
     this.focusTextInput = this.focusTextInput.bind(this)

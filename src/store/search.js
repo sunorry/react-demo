@@ -8,6 +8,7 @@ const CFG_PAGE = {
 
 class Count {
     cacheKey = '' // 请求 list 的 searchKey，当 searchKey 改变的时候，会 reset list，重新请求，可以说很有种的状态位了，暂时先不用
+    @observable historyList = []
     @observable showType = 'INIT' // 显示的 ‘INIT’ 'RESULT'
     @observable suggestList = []  // 搜索建议
     @observable searchKey = '' // input 值
@@ -65,6 +66,15 @@ class Count {
     }
 
     @action
+    fetchHistory() {
+        setTimeout(() => {
+            runInAction(() => {
+                this.historyList = ['头痛门诊', 'DO MORE', 'Casey Neistat']
+            })
+        }, 300)
+    }
+
+    @action
     fetchSuggest(searchKey) {
         if(!this.searchKey) return
         setTimeout(() => {
@@ -119,7 +129,7 @@ class Count {
                         total = 2
                         break;
                     default:
-                        list = [9, 10, 11, Math.random()]
+                        list = [{ code: 1, text: 9}, { code: 10, text: 10 }, {code: 11, text: 11 }, { code: 12, text: Math.random()}]
                 }
                 this.setListData(key, {
                     list,

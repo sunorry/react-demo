@@ -3,7 +3,7 @@ import { suggest, barList, historyList, hosList, deptsList, getCommendList, CFG_
 import { getFirstLetterUpper } from '../tools/utils'
 
 class Count {
-    cacheKey = '' // 请求 list 的 searchKey，当 searchKey 改变的时候，会 reset list，重新请求，可以说很有种的状态位了，暂时先不用
+    // cacheKey = '' // 请求 list 的 searchKey，当 searchKey 改变的时候，会 reset list，重新请求，可以说很有种的状态位了，暂时先不用
     @observable historyList = []
     @observable showType = 'INIT' // 显示的 ‘INIT’ 'RESULT'
     @observable suggestList = []  // 搜索建议

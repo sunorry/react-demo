@@ -59,6 +59,7 @@ class App extends React.Component {
     store.syncSearchKey(value)
   }
 
+  // TODO: 本应该 input 的事件都写在自己的容器组件中，但是点击历史和搜素建议的时候都需要修改 input 中的值
   render () {
     return (
       <div>

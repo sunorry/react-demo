@@ -13,6 +13,7 @@ export default class ResultBar extends Component {
     goDetail(item) {
         this.props.store.setResultCurrent(item.key)
     }
+
     render() {
         const { store } = this.props
         return (

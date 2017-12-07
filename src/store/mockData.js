@@ -17,8 +17,6 @@ export const barList = [{
   key: 'depts'
 }]
 
-export const historyList = ['头痛门诊', 'DO MORE', 'Casey Neistat']
-
 export const hosList = [{ code: 1, text: '天坛医院' }, { code: 2, text: '朝阳医院' }, { code: 3, text: '世纪坛' }, { code: 4, text: '儿童医院'} ]
 
 export const deptsList = [{ code: 1, text: '儿科' }, { code: 2, text: '眼科' }, { code: 3, text: '世纪口腔科室坛' }, { code: 4, text: '皮肤科' }]

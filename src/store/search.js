@@ -1,10 +1,9 @@
 import { observable, computed, action, runInAction } from 'mobx'
-import { suggest, barList, historyList, hosList, deptsList, getCommendList, CFG_PAGE } from './mockData.js'
+import { suggest, barList, hosList, deptsList, getCommendList, CFG_PAGE } from './mockData.js'
 import { getFirstLetterUpper } from '../tools/utils'
 
 class Count {
     // cacheKey = '' // 请求 list 的 searchKey，当 searchKey 改变的时候，会 reset list，重新请求，可以说很有种的状态位了，暂时先不用
-    @observable historyList = []
     @observable showType = 'INIT' // 显示的 ‘INIT’ 'RESULT'
     @observable suggestList = []  // 搜索建议
     @observable searchKey = '' // input 值
@@ -62,15 +61,6 @@ class Count {
     }
 
     @action
-    fetchHistory() {
-        setTimeout(() => {
-            runInAction(() => {
-                this.historyList = historyList
-            })
-        }, 300)
-    }
-
-    @action
     fetchSuggest(searchKey) {
         if(!this.searchKey) return
         setTimeout(() => {
@@ -99,7 +89,7 @@ class Count {
         // TODO: 1. 添加缓存逻辑，如果某个 searchKey 已经请求过，直接显示
         //  2. 添加分页逻辑判断，如果已经是最后一页直接 return，推荐模块不分页
         // getFetchParams
-        const { needFetch, current } =  this.getFetchParams(key, type)
+        const { needFetch } =  this.getFetchParams(key, type)
         if(!needFetch) return
         setTimeout(() => {
             runInAction(() => {

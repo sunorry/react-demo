@@ -68,8 +68,10 @@ class App extends React.Component {
           onInputFouce={this.searchFocus} />
 
         <div style={{ display: store.showType === 'INIT' ? 'block' : 'none' }}>
-          <History onSetInputValue={ this.setSmartInputValue }/>
-          <Suggest onSetInputValue={ this.setSmartInputValue }/>
+          <History store={store}
+            onSetInputValue={ this.setSmartInputValue }/>
+          <Suggest store={store}
+            onSetInputValue={ this.setSmartInputValue }/>
           <NoSuggess />
         </div>
         <div style={{ display: store.showType === 'RESULT' ? 'block' : 'none' }}>

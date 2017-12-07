@@ -12,6 +12,7 @@ export default class History extends Component {
   }
 
   onTap(key) {
+    const { store } = this.props
     store.setShowType('RESULT')
     // store.syncSearchKey(key)
     this.props.onSetInputValue(key)
@@ -24,6 +25,7 @@ export default class History extends Component {
   }
 
   render () {
+    const { store } = this.props
     return (
       <HistoryList list={store.historyList}
         show={!store.searchKey.length}

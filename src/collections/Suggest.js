@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 
-import store from '../store/search'
 import SuggestList from '../components/SuggestList'
 
 @observer
@@ -12,12 +11,13 @@ export default class Suggest extends Component {
   }
   goResult(text) {
     this.props.onSetInputValue(text)
-    // store.syncSearchKey(text)
+    const { store } = this.props
     store.setShowType('RESULT')
     store.fetchResultBar()
     store.resetList()
   }
   render () {
+    const { store } = this.props
     return (
       <SuggestList list={store.suggestList}
         show={store.showHistory}

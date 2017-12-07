@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import store from '../store/search'
 
 import BarList from '../components/BarList'
 
@@ -12,10 +11,10 @@ export default class ResultBar extends Component {
     }
 
     goDetail(item) {
-        store.setResultCurrent(item.key)
-        // store.fetchResultList(item.key)
+        this.props.store.setResultCurrent(item.key)
     }
     render() {
+        const { store } = this.props
         return (
             <BarList list={store.resultBar}
                 onTap={this.goDetail}

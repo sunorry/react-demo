@@ -72,13 +72,13 @@ class App extends React.Component {
             onSetInputValue={ this.setSmartInputValue }/>
           <Suggest store={store}
             onSetInputValue={ this.setSmartInputValue }/>
-          <NoSuggess />
+          <NoSuggess store={store} />
         </div>
         <div style={{ display: store.showType === 'RESULT' ? 'block' : 'none' }}>
-          <ResultBar />
-          <Recommand />
-          <Hospital />
-          <Depts />
+          <ResultBar store={store} />
+          <Recommand store={store} />
+          <Hospital store={store} />
+          <Depts store={store} />
         </div>
         <DevTools />
       </div>

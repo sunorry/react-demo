@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import store from '../store/search'
 
 import ResultList from '../components/ResultList'
 
@@ -16,6 +15,7 @@ export default class Hospital extends Component {
     }
 
     render() {
+        const { store } = this.props
         return (
             <ResultList list={store.resultHos.list}
                   show={store.resultCurrent === 'hos'}

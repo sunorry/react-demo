@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import store from '../store/search'
 
 import ResultList from '../components/ResultList'
 
@@ -15,6 +14,7 @@ export default class ResultBar extends Component {
         console.log(item.code, item.text)
     }
     render() {
+        const { store } = this.props
         return (
             <ResultList list={store.resultRecommend.list}
                 show={store.resultCurrent === 'recommend'}

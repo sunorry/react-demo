@@ -12,9 +12,9 @@ export default class History extends Component {
   }
 
   onTap(key) {
-    console.log(key)
     store.setShowType('RESULT')
-    store.syncSearchKey(key)
+    // store.syncSearchKey(key)
+    this.props.onSetInputValue(key)
     store.fetchResultBar()
     store.resetList()
   }
@@ -31,5 +31,4 @@ export default class History extends Component {
       />
     )
   }
-
 }

@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-// import { observer } from 'mobx-react'
-
-// import store from '../store/search'
 
 export default class SmartInput extends Component {
   constructor (props) {
@@ -15,18 +12,18 @@ export default class SmartInput extends Component {
 
   focusInput () {
     this.inputEl.focus()
+    this.props.onInputFouce && this.props.onInputFouce()
   }
 
-  changeInputValue(e) {
+  changeInputValue (e) {
     let value = e.target.value
     this.setValue(value)
     this.props.onInputValueChange && this.props.onInputValueChange(value)
   }
 
-  setValue(value) {
+  setValue (value) {
     this.setState({
-      value
-    })
+    value})
   }
 
   render () {

@@ -11,7 +11,8 @@ export default class Suggest extends Component {
     this.goResult = this.goResult.bind(this)
   }
   goResult(text) {
-    store.syncSearchKey(text)
+    this.props.onSetInputValue(text)
+    // store.syncSearchKey(text)
     store.setShowType('RESULT')
     store.fetchResultBar()
     store.resetList()

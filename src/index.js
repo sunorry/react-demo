@@ -24,11 +24,9 @@ useStrict(true)
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      value: ''
-    }
     this.searchKeyChange = this.searchKeyChange.bind(this)
     this.searchFocus = this.searchFocus.bind(this)
+    this.setSmartInputValue = this.setSmartInputValue.bind(this)
   }
 
   throttleFetchSuggest(value) {
@@ -43,7 +41,7 @@ class App extends React.Component {
   }
 
   searchKeyChange(value) {
-    store.syncSearchKey(value)
+    this.syncSearchKey(value)
     this.throttleFetchSuggest(value.trim())
   }
 
@@ -52,17 +50,26 @@ class App extends React.Component {
     store.fetchSuggest()
   }
 
+  setSmartInputValue(value) {
+    this.smartInput.setValue(value)
+    this.syncSearchKey(value)
+  }
+
+  syncSearchKey(value) {
+    store.syncSearchKey(value)
+  }
+
   render () {
     return (
       <div>
         <SmartInput
-          ref={ bar => this.input = bar }
+          ref={ bar => this.smartInput = bar }
           onInputValueChange={this.searchKeyChange}
           onInputFouce={this.searchFocus} />
 
         <div style={{ display: store.showType === 'INIT' ? 'block' : 'none' }}>
-          <History />
-          <Suggest />
+          <History onSetInputValue={ this.setSmartInputValue }/>
+          <Suggest onSetInputValue={ this.setSmartInputValue }/>
           <NoSuggess />
         </div>
         <div style={{ display: store.showType === 'RESULT' ? 'block' : 'none' }}>

@@ -22,3 +22,8 @@ ui, li, div, h4 {
 .g-click {
   cursor: pointer;
 }
+
+/*input placeholder*/
+.g-placeholder {
+  padding-left: 10px;
+}

@@ -4,6 +4,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const NOOP = () => {};
+
 function OfflineView(props) {
   return (
     <div>
@@ -22,7 +24,7 @@ OfflineView.propTypes = {
 
 OfflineView.defaultProps = {
   tips: '网络不可用，请检查网络设置',
-  reTry: () => {},
+  reTry: NOOP,
 };
 
 export default OfflineView;

@@ -4,7 +4,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OfflineView, Loading } from '../../component';
+import { OfflineView, Loading } from '../../ui';
+
+const NOOP = () => {};
 
 function Body(props) {
   return (
@@ -49,7 +51,7 @@ Body.propTypes = {
 Body.defaultProps = {
   isOnline: true,
   isApiNotError: true,
-  reTry: () => {},
+  reTry: NOOP,
   children: null,
   style: null,
   showLoading: false,

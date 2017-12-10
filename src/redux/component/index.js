@@ -5,8 +5,3 @@
 export { default as ClickMe } from './ClickMe';
 // Body 组件，控制页面正文
 export { default as Body } from './Body';
-// 断网组件
-export { default as OfflineView} from './OfflineView';
-// Loading组件
-export { default as Loading} from './Loading';
-

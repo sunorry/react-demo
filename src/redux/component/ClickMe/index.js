@@ -6,6 +6,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+const NOOP = () => {};
+
 class ClickMe extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +39,7 @@ ClickMe.propTypes = {
 
 ClickMe.defaultProps = {
   children: null,
-  handleClick: () => {},
+  handleClick: NOOP,
   param: {},
 };
 

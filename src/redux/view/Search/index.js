@@ -4,7 +4,7 @@ import {
   Empty,
   HistoryList,
   SuggestList,
-} from '../../component';
+} from './component';
 import './style.css'
 
 class Search extends React.Component {

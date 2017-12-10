@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NOOP } from '../../constant';
+import { NOOP } from '../../../../constant';
 
 function SuggestList(props) {
   return (

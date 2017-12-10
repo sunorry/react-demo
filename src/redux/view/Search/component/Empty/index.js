@@ -21,4 +21,5 @@ Empty.propTypes = {
 Empty.defaultProps = {
   text: '暂无记录',
 }
+
 export default Empty;

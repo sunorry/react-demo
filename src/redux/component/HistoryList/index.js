@@ -1,3 +1,6 @@
+/**
+ * 搜索历史列表组件
+ */
 import React from 'react'
 import PropTypes from 'prop-types';
 import { NOOP } from '../../constant';

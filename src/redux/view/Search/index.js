@@ -2,9 +2,10 @@ import React from 'react';
 import {
   HistoryList,
 } from './component';
-import '../../style/index.css';
+import { Body } from '../../component';
 import { UpdateSetState } from '../../constant';
 import { HISTORY_LIST } from './config';
+import '../../style/index.css';
 
 class Search extends React.Component {
   constructor(props) {
@@ -54,11 +55,15 @@ class Search extends React.Component {
       historyData,
     } = this.state;
     return (
-      <HistoryList
-        visible={histortyVisible}
-        list={historyData}
-        handleClick={this.clickItem}
-      />
+      <div>
+        <Body>
+          <HistoryList
+            visible={histortyVisible}
+            list={historyData}
+            handleClick={this.clickItem}
+          />
+        </Body>
+      </div>
     )
   }
 }

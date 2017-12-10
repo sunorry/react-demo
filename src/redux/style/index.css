@@ -1,0 +1,24 @@
+/*
+* 全局样式
+*/
+
+/*reset*/
+ui, li, div, h4 {
+  padding: 0;
+  margin: 0;
+}
+
+/*显示*/
+.g-show {
+  display: 'inline-block';
+}
+
+/*隐藏*/
+.g-hide {
+  display: none;
+}
+
+/*点击样式*/
+.g-click {
+  cursor: pointer;
+}

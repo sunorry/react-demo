@@ -1,61 +1,64 @@
 import React from 'react';
 import {
-  Input,
-  Empty,
   HistoryList,
-  SuggestList,
 } from './component';
-import './style.css'
+import '../../style/index.css';
+import { UpdateSetState } from '../../constant';
+import { HISTORY_LIST } from './config';
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
+    // 页面 mount 的状态
+    this.unmount = false;
     this.state = {
-      // 搜索历史
-      historyData:[{
-        key: 'aaa',
-        text: 'aaa'
-      }, {
-        key: 'bbb',
-        text: 'bbb'
-      }],
-      // suggest
-      suggestData:[{
-        key: 'aaa',
-        text: 'aaa'
-      }, {
-        key: 'bbb',
-        text: 'bbb'
-      }],
+      // 历史记录显示开关
+      histortyVisible: false,
+      // 历史记录列表
+      historyData: HISTORY_LIST,
     };
 
-    this.onItem = this.onItem.bind(this);
+    // 点击 item
+    this.clickItem = this.clickItem.bind(this);
+    // 设置 state
+    this.SafeSetState = this.SafeSetState.bind(this);
+  }
+
+  componentWillMount() {
+    this.SafeSetState({
+      histortyVisible: true,
+    })
+  }
+
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
+
+  // 设置 state
+  SafeSetState(stateObj, callback) {
+    UpdateSetState({
+      stateObj,
+      content: this,
+      callback
+    });
   }
 
   // 点击历史记录
-  onItem(key) {
-    alert(key)
+  clickItem(item) {
+    alert(item.key)
   }
 
   render () {
     const {
-      historyData = [],
-      suggestData = [],
+      histortyVisible,
+      historyData,
     } = this.state;
     return (
-      <div>
-        <Input style={'input-box'}  />
-        <HistoryList
-          visible
-          onClick={this.onItem}
-          list={historyData}
-        />
-        <SuggestList
-          visible
-          onClick={this.onItem}
-          list={suggestData}
-        />
-      </div>
+      <HistoryList
+        visible={histortyVisible}
+        list={historyData}
+        handleClick={this.clickItem}
+      />
     )
   }
 }

@@ -3,15 +3,15 @@ import {
   HistoryList,
 } from './component';
 import { Body } from '../../component';
-import { UpdateSetState } from '../../constant';
 import { HISTORY_LIST } from './config';
+import { SetSafeState } from '../../decorate';
 import '../../style/index.css';
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
     // 页面 mount 的状态
-    this.unmount = false;
+    this.unmounted = false;
     this.state = {
       // 历史记录显示开关
       histortyVisible: false,
@@ -19,29 +19,31 @@ class Search extends React.Component {
       historyData: HISTORY_LIST,
     };
 
+    // 页面初始化
+    this.init = this.init.bind(this);
     // 点击 item
     this.clickItem = this.clickItem.bind(this);
     // 设置 state
-    this.SafeSetState = this.SafeSetState.bind(this);
+    this.SetSafeState = this.SetSafeState.bind(this);
   }
 
   componentWillMount() {
-    this.SafeSetState({
-      histortyVisible: true,
-    })
+    this.init();
   }
 
   componentWillUnmount() {
     this.unmounted = true;
   }
 
-  // 设置 state
-  SafeSetState(stateObj, callback) {
-    UpdateSetState({
-      stateObj,
-      content: this,
-      callback
-    });
+  @SetSafeState()
+  SetSafeState(config, callback) {
+    this.setState(config, callback)
+  }
+
+  init() {
+    this.SetSafeState({
+      histortyVisible: true,
+    })
   }
 
   // 点击历史记录

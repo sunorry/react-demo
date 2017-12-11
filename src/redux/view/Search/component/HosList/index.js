@@ -5,11 +5,13 @@ import { NOOP } from '../../../../constant'
 function SuggestList (props) {
   return (
     <ul style={{ display: props.visible ? 'block' : 'none' }}>
-      {props.list.map(item  => (
-        <li key={item.key} onClick={() => { props.handleClick(item) }}>
+      {
+        props.list.map(item  => (
+          <li key={item.key} onClick={() => { props.handleClick(item) }}>
             {item.text}
-        </li>
-       ))}
+          </li>
+        ))
+      }
     </ul>
   )
 }
@@ -24,6 +26,7 @@ SuggestList.propTypes = {
 }
 
 SuggestList.defaultProps = {
+  visible: false,
   list: [{
     key: '',
     text: ''

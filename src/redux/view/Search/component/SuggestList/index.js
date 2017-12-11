@@ -24,6 +24,7 @@ SuggestList.propTypes = {
 }
 
 SuggestList.defaultProps = {
+  visible: false,
   list: [{
     key: '',
     text: ''

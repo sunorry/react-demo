@@ -3,19 +3,25 @@ import PropTypes from 'prop-types'
 import { NOOP } from '../../../../constant'
 import './style.css'
 
-function SuggestList (props) {
+function ResultBar (props) {
   return (
     <ul className='bar-container' style={{ display: props.visible ? '' : 'none' }}>
-      {props.list.map(item => (
-            <li className={props.current === item.key ? 'current bar-item' : 'bar-item'} key={item.key} onClick={() => { props.handleClick(item) }}>
-                                        {item.text}
-                                    </li>
-                                ))}
+      {
+        props.list.map(item => (
+          <li
+            className={props.current === item.key ? 'current bar-item' : 'bar-item'}
+            key={item.key}
+            onClick={() => { props.handleClick(item) }}
+          >
+            {item.text}
+          </li>
+        ))
+      }
     </ul>
   )
 }
 
-SuggestList.propTypes = {
+ResultBar.propTypes = {
   // 是否显示
   visible: PropTypes.bool,
   // 数据列表
@@ -24,7 +30,8 @@ SuggestList.propTypes = {
   handleClick: PropTypes.func
 }
 
-SuggestList.defaultProps = {
+ResultBar.defaultProps = {
+  visible: false,
   list: [{
     key: '',
     text: ''
@@ -32,4 +39,4 @@ SuggestList.defaultProps = {
   handleClick: NOOP
 }
 
-export default SuggestList
+export default ResultBar

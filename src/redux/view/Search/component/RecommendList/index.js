@@ -5,11 +5,13 @@ import { NOOP } from '../../../../constant'
 function RecommendList (props) {
   return (
     <ul style={{ display: props.visible ? 'block' : 'none' }}>
-      {props.list.map(item  => (
-                           <li key={item.key} onClick={() => { props.handleClick(item) }}>
-                               {item.text}
-                           </li>
-                          ))}
+      {
+        props.list.map(item  => (
+          <li key={item.key} onClick={() => { props.handleClick(item) }}>
+            {item.text}
+          </li>
+        ))
+      }
     </ul>
   )
 }
@@ -24,6 +26,7 @@ RecommendList.propTypes = {
 }
 
 RecommendList.defaultProps = {
+  visible: false,
   list: [{
     key: '',
     text: ''

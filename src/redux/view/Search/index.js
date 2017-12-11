@@ -178,7 +178,8 @@ class Search extends React.Component {
   setInputValue(value) {
     this.input.setValue(value)
   }
-
+  // 当在 result 显示的情况下，点击输入框，应该显示 suggest
+  // 如果点击的搜索词正好是上次点击的，直接显示（也可以重新请求）
   // 还是应该分成两块 INIT RESULT 控制起来比较简单，这个 bug 就先不解决了。·
   onInputClick() {
     if(!this.state.resultCurrent) return

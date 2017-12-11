@@ -37,7 +37,7 @@ class Input extends Component {
 
   handleClick () {
     this.inputEl.focus()
-    this.props.onClick(this.state.value)
+    this.props.handleClick(this.state.value)
   }
 
   handleChange (e) {
@@ -48,7 +48,7 @@ class Input extends Component {
   }
 
   setValue (value) {
-    this.safeSetState({ value })
+    this.safeSetState({ value})
   }
 
   render () {

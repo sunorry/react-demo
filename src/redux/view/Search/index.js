@@ -61,6 +61,8 @@ class Search extends React.Component {
     this.fetchResultList = this.fetchResultList.bind(this)
     // 设置input 值
     this.setInputValue = this.setInputValue.bind(this)
+    // 点击 input
+    this.onInputClick = this.onInputClick.bind(this)
   }
 
   componentWillMount() {
@@ -120,12 +122,6 @@ class Search extends React.Component {
   // 2 fetch list
   fetchResultList({key}) {
     if(this.current === key) return
-    // this.SetSafeState({
-    //   resultRecommendVisible: true,
-    //   resultRecommendList: getCommendList(),
-    //   resultHosVisible: false,
-    //   resultDeptsList: false
-    // })
     let listKey = ''
     let mockData = ''
     switch (key) {
@@ -183,6 +179,16 @@ class Search extends React.Component {
     this.input.setValue(value)
   }
 
+  // 还是应该分成两块 INIT RESULT 控制起来比较简单，这个 bug 就先不解决了。·
+  onInputClick() {
+    if(!this.state.resultCurrent) return
+    const hasSuggest = this.state.suggestListData.length > 0
+    this.SetSafeState({
+      suggestListVisible: hasSuggest,
+      suggestNoDataVisible: !hasSuggest,
+      resultBarVisible: false
+    })
+  }
   _setResultState() {
     this.SetSafeState({
       histortyVisible: false,
@@ -212,6 +218,7 @@ class Search extends React.Component {
           <Input
             ref={text => this.input = text}
             onChange={this.onChange}
+            handleClick={this.onInputClick}
           />
           <HistoryList
             visible={histortyVisible}

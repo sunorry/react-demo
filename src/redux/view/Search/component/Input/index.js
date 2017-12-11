@@ -1,37 +1,37 @@
 /**
  * 文本输入框组件
  */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { NOOP } from '../../../../constant';
-import './style.css';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { NOOP } from '../../../../constant'
+import './style.css'
 
 class Input extends Component {
   constructor (props) {
     super(props)
     this.state = {
       // 文本框的内容
-      value: props.value,
-    };
+      value: props.value
+    }
     // 页面 mount 的状态
-    this.unmount = false;
+    this.unmount = false
     // input 的 ref
-    this.inputEl = null;
-    this.safeSetState = this.safeSetState.bind(this);
+    this.inputEl = null
+    this.safeSetState = this.safeSetState.bind(this)
     // 处理点击
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this)
     // 处理文本变化
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  componentWillUnmount() {
-    this.unmount = true;
+  componentWillUnmount () {
+    this.unmount = true
   }
 
   // 页面销毁，不能 setState
-  safeSetState(config, callback) {
+  safeSetState (config, callback) {
     if (!this.unmount) {
-      this.setState(config, callback);
+      this.setState(config, callback)
     }
   }
 
@@ -43,13 +43,16 @@ class Input extends Component {
   handleChange (e) {
     let value = e.target.value
     this.safeSetState({
-      value,
-    });
+    value})
     this.props.onChange(value)
   }
 
+  setValue (value) {
+    this.safeSetState({ value })
+  }
+
   render () {
-    const classNameList = ['placeholder'];
+    const classNameList = ['placeholder']
     if (this.props.placeholderStyle) {
       classNameList.push(this.props.placeholderStyle)
     }
@@ -73,11 +76,11 @@ Input.propTypes = {
   // 自定义样式
   style: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number,
+    PropTypes.number
   ]),
   placeholderStyle: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number,
+    PropTypes.number
   ]),
   // 默认占位
   placeholder: PropTypes.string,
@@ -88,8 +91,8 @@ Input.propTypes = {
   // 文本改变事件
   onChange: PropTypes.func,
   // input type
-  type: PropTypes.oneOf(['text']),
-};
+  type: PropTypes.oneOf(['text'])
+}
 
 Input.defaultProps = {
   style: null,
@@ -98,7 +101,7 @@ Input.defaultProps = {
   placeholderStyle: null,
   onClick: NOOP,
   onChange: NOOP,
-  type: 'text',
-};
+  type: 'text'
+}
 
-export default Input;
+export default Input

@@ -1,15 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { NOOP } from '../../../../constant'
+import './style.css'
 
 function SuggestList (props) {
   return (
-    <ul style={{ display: props.visible ? 'block' : 'none' }}>
-      {props.list.map((text, index) => (
-        <li key={index} onClick={() => { props.handleClick(text) }}>
-          {text}
-        </li>
-      ))}
+    <ul className='bar-container' style={{ display: props.visible ? '' : 'none' }}>
+      {props.list.map(item => (
+            <li className={props.current === item.key ? 'current bar-item' : 'bar-item'} key={item.key} onClick={() => { props.handleClick(item) }}>
+                                        {item.text}
+                                    </li>
+                                ))}
     </ul>
   )
 }

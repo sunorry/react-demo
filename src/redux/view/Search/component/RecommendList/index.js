@@ -2,19 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { NOOP } from '../../../../constant'
 
-function SuggestList (props) {
+function RecommendList (props) {
   return (
     <ul style={{ display: props.visible ? 'block' : 'none' }}>
-      {props.list.map((text, index) => (
-        <li key={index} onClick={() => { props.handleClick(text) }}>
-          {text}
-        </li>
-      ))}
+      {props.list.map(item  => (
+                           <li key={item.key} onClick={() => { props.handleClick(item) }}>
+                               {item.text}
+                           </li>
+                          ))}
     </ul>
   )
 }
 
-SuggestList.propTypes = {
+RecommendList.propTypes = {
   // 是否显示
   visible: PropTypes.bool,
   // 数据列表
@@ -23,7 +23,7 @@ SuggestList.propTypes = {
   handleClick: PropTypes.func
 }
 
-SuggestList.defaultProps = {
+RecommendList.defaultProps = {
   list: [{
     key: '',
     text: ''
@@ -31,4 +31,4 @@ SuggestList.defaultProps = {
   handleClick: NOOP
 }
 
-export default SuggestList
+export default RecommendList

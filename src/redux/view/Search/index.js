@@ -5,9 +5,9 @@ import {
   SuggestList,
   Empty,
   Tab,
-  HosList,
-  RecommendList,
-  DeptsList,
+  // HosList,
+  // RecommendList,
+  // DeptsList,
 } from './component';
 import { Body } from '../../component';
 import {
@@ -163,6 +163,7 @@ class Search extends React.Component {
         listKey = 'resultRecommend'
         this.resultRecommendList = getRecommendList();
     }
+
     setTimeout(() => {
       this[listKey + 'Fetched'] = true;
       this.SetSafeState({

@@ -8,5 +8,7 @@ export { default as Input } from './Input';
 export { default as HistoryList } from './HistoryList';
 // 搜索建议
 export { default as SuggestList } from './SuggestList';
+
+export { default as ForTest } from './ForTest'
 // tab
 export { default as Tab } from './Tab'

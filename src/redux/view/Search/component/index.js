@@ -14,12 +14,5 @@ export { default as SuggestList } from './SuggestList';
 // 搜索无结果
 export { default as Empty } from './Empty'
 
-// 搜索结果列表项
-export { default as ResultBar } from './ResultBar'
-
-// 推荐list
-export { default as RecommendList } from './RecommendList'
-
-export { default as HosList } from './HosList'
-
-export { default as DeptsList } from './DeptsList'
+// tab
+export { default as Tab } from './Tab'

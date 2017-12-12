@@ -5,9 +5,9 @@ import {
   SuggestList,
   Empty,
   Tab,
-  HosList,
-  RecommendList,
-  DeptsList,
+  // HosList,
+  // RecommendList,
+  // DeptsList,
 } from './component';
 import { Body } from '../../component';
 import {
@@ -144,14 +144,7 @@ class Search extends React.Component {
   // 2 fetch list
   fetchResultList({key}) {
     if(this.current === key) return;
-    // 已经 fetch 的直接显示
-    if(this[listKey + 'Fetched']) {
-      this.SetSafeState({
-        resultCurrent: key,
-        searchList: this[listKey + 'List']
-      });
-      return;
-    }
+
 
     let listKey = '';
     switch (key) {
@@ -167,6 +160,16 @@ class Search extends React.Component {
         listKey = 'resultRecommend'
         this.resultRecommendList = getRecommendList();
     }
+
+    // 已经 fetch 的直接显示
+    if (this[listKey + 'Fetched']) {
+      this.SetSafeState({
+        resultCurrent: key,
+        searchList: this[listKey + 'List']
+      });
+      return;
+    }
+
     setTimeout(() => {
       this[listKey + 'Fetched'] = true;
       this.SetSafeState({

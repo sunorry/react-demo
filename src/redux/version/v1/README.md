@@ -10,4 +10,5 @@
 
 * Input 添加 componentWillReceiveProps，解决 setValue
 * this.state.isFetched 和 this.isFetched 区别
+* throttleFetchSuggest 可以通过 decorate 搞定
 

@@ -45,7 +45,7 @@ Tab.propTypes = {
 }
 
 Tab.defaultProps = {
-  visible: false,
+  visible: true,
   current: '',
   tabList: [{
     key: '',

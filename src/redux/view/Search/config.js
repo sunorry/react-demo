@@ -11,7 +11,17 @@ export const HISTORY_LIST = [{
   text: '安贞医院'
 }]
 // 建议列表
-export const SUGGEST_LIST = ['swx', 'sunorry', 'tingker']
+export const SUGGEST_LIST = [{
+  key: 'aa',
+  text: 'swx',
+}, {
+  key: 'bb',
+  text: 'sunorry',
+}, {
+  key: 'cc',
+  text: 'tigger'
+}]
+
 // tabBar
 export const BAR_List = [{
   text: '推荐',

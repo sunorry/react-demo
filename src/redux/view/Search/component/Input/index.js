@@ -56,9 +56,9 @@ class Input extends Component {
     this.props.onChange(value)
   }
 
-  // setValue (value) {
-  //   this.safeSetState({ value})
-  // }
+  setValue (value) {
+    this.safeSetState({ value})
+  }
 
   render () {
     const classNameList = ['placeholder']

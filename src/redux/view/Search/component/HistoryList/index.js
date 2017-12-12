@@ -7,14 +7,16 @@ import { NOOP } from '../../../../constant';
 import { ClickMe } from '../../../../component';
 
 function HistoryList(props) {
+  const { list = [], title, handleClick } = props;
+  if (list.length === 0) return null;
   return (
-    <div className={props.visible ? 'g-show' : 'g-hide'}>
-      <h4>{props.title}</h4>
+    <div>
+      <h4>{title}</h4>
       <ul>
         {
-          props.list.map((item, index) => (
+          list.map((item, index) => (
             <li key={item.key}>
-              <ClickMe handleClick={props.handleClick} param={item}>
+              <ClickMe handleClick={handleClick} param={item}>
                 <span>{item.text}</span>
               </ClickMe>
             </li>
@@ -28,8 +30,6 @@ function HistoryList(props) {
 HistoryList.propTypes = {
   // title
   title: PropTypes.string,
-  // 是否显示
-  visible: PropTypes.bool,
   // 列表数据
   list: PropTypes.array,
   // 处理点击事件
@@ -38,7 +38,6 @@ HistoryList.propTypes = {
 
 HistoryList.defaultProps = {
   title: '历史搜索',
-  visible: false,
   list: [],
   handleClick: NOOP,
 }

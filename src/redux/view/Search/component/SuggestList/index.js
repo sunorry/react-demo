@@ -1,22 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { NOOP } from '../../../../constant'
+import Empty from './Empty';
 
 function SuggestList (props) {
+  const { list = [], handleClick } = props;
+  if (list.length === 0) return (<Empty />)
   return (
-    <ul style={{ display: props.visible ? 'block' : 'none' }}>
-      {props.list.map((text, index) => (
-        <li key={index} onClick={() => { props.handleClick(text) }}>
-          {text}
-        </li>
-      ))}
+    <ul>
+      {
+        list.map(item => (
+          <li key={item.key} onClick={() => { handleClick(item) }}>{item.text}</li>
+        ))
+      }
     </ul>
   )
 }
 
 SuggestList.propTypes = {
-  // 是否显示
-  visible: PropTypes.bool,
   // 数据列表
   list: PropTypes.array,
   // 点击
@@ -24,7 +25,6 @@ SuggestList.propTypes = {
 }
 
 SuggestList.defaultProps = {
-  visible: false,
   list: [{
     key: '',
     text: ''

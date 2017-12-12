@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 function Empty(props) {
   return (
-    <div style={{ display: props.visible ? 'block' : 'none' }}>{props.text}</div>
+    <div>{props.text}</div>
   );
 }
 

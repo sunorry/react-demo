@@ -1,0 +1,27 @@
+.bar-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.bar-item {
+  list-style: none;
+  margin-right: 3px;
+  padding-right: 3px;
+  position: relative;
+  display: inline-block;
+}
+
+.bar-item::after {
+  position: absolute;
+  top: 2px;
+  right: -1px;
+  content: '';
+  width: 1px;
+  height: 18px;
+  background-color: red;
+  display: inline-block;
+}
+
+.current {
+  color: green;
+}

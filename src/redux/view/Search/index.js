@@ -4,13 +4,20 @@ import {
   HistoryList,
   SuggestList,
   Empty,
-  ResultBar,
+  Tab,
   HosList,
   RecommendList,
-  DeptsList
+  DeptsList,
 } from './component';
 import { Body } from '../../component';
-import { HISTORY_LIST, SUGGEST_LIST, BAR_List, HOS_LIST, DETPS_List, getRecommendList } from './config';
+import {
+  HISTORY_LIST,
+  SUGGEST_LIST,
+  BAR_List,
+  HOS_LIST,
+  DETPS_List,
+  getRecommendList,
+} from './config';
 import { SetSafeState } from '../../decorate';
 import '../../style/index.css';
 
@@ -19,7 +26,23 @@ class Search extends React.Component {
     super(props);
     // 页面 mount 的状态
     this.unmounted = false;
+    // 推荐
+    this.resultRecommendList = [];
+    // 医院
+    this.resultHosList = [];
+    // 科室
+    this.resultDeptsList = [];
+
+    // 推荐
+    this.resultRecommendFetched =  false;
+    // 科室
+    this.resultDeptsFetched = false;
+    // 医院
+    this.resultHosFetched = false;
+
     this.state = {
+      // 搜索值
+      searchVal: '',
       // 历史记录显示开关
       histortyVisible: false,
       // 历史记录列表
@@ -31,20 +54,10 @@ class Search extends React.Component {
       // 无搜索结果
       suggestNoDataVisible: false,
       // 结果 item bar
-      resultBarVisible: false,
-      // 结果 item list
-      resultBarList: [],
-      // 推荐
-      resultRecommendList: [],
-      resultRecommendListFetched: false,
-      // 医院
-      resultHosList: [],
-      resultHosListFetched: false,
-      // 科室
-      resultDeptsList: [],
-      resultDeptsListFetched: false,
-      // 当前选中的 bar item
-      resultCurrent: ''
+      TabVisible: false,
+      // tabBarList
+      tabBarList: [],
+      // resultCurrent: ''
     };
 
     // 页面初始化
@@ -84,6 +97,13 @@ class Search extends React.Component {
     })
   }
 
+  // 点击历史，搜索建议同步搜索框内容
+  setInputValue(value) {
+    this.SetSafeState({
+      searchVal: value,
+    });
+  }
+
   // 点击历史记录
   clickHistoryItem(item) {
     console.log('click history item', item)
@@ -91,6 +111,7 @@ class Search extends React.Component {
     this._setResultState()
     this._fetchResultBar()
   }
+
   // 搜索 input 框变化
   onChange(value) {
     console.log('input change', value)
@@ -117,41 +138,43 @@ class Search extends React.Component {
       })
     }, 300)
   }
+
   // 这里其实做了两件事情，写 demo 无伤大雅
   // 1 设置选中 item
   // 2 fetch list
   fetchResultList({key}) {
-    if(this.current === key) return
-    let listKey = ''
-    let mockData = ''
+    if(this.current === key) return;
+    // 已经 fetch 的直接显示
+    if(this[listKey + 'Fetched']) {
+      this.SetSafeState({
+        resultCurrent: key,
+        searchList: this[listKey + 'List']
+      });
+      return;
+    }
+
+    let listKey = '';
     switch (key) {
       case 'hos':
-        listKey = 'resultHosList'
-        mockData = HOS_LIST
+        listKey = 'resultHos'
+        this.resultHosList = HOS_LIST;
         break;
       case 'depts':
-        listKey = 'resultDeptsList'
-        mockData = DETPS_List
+        listKey = 'resultDepts'
+        this.resultDeptsList = DETPS_List;
         break;
       default:
-        listKey = 'resultRecommendList'
-        mockData = getRecommendList()
+        listKey = 'resultRecommend'
+        this.resultRecommendList = getRecommendList();
     }
-    // 已经 fetch 的直接显示
-    if(this.state[listKey + 'Fetched']) {
+    setTimeout(() => {
+      this[listKey + 'Fetched'] = true;
       this.SetSafeState({
+        searchList: this[listKey + 'List'],
         resultCurrent: key
       })
-    } else {
-      setTimeout(() => {
-        this.SetSafeState({
-          [listKey]: mockData,
-          [listKey + 'Fetched']: true,
-          resultCurrent: key
-        })
-        console.log(listKey, 'fetched')
-      }, 300)
-    }
+      console.log(listKey, 'fetched')
+    }, 300)
   }
 
   // fetch suggest list
@@ -174,10 +197,6 @@ class Search extends React.Component {
     }, 200)
   }
 
-  // 点击历史，搜索建议同步搜索框内容
-  setInputValue(value) {
-    this.input.setValue(value)
-  }
   // 当在 result 显示的情况下，点击输入框，应该显示 suggest
   // 如果点击的搜索词正好是上次点击的，直接显示（也可以重新请求）
   // 还是应该分成两块 INIT RESULT 控制起来比较简单，这个 bug 就先不解决了。·
@@ -190,6 +209,7 @@ class Search extends React.Component {
       resultBarVisible: false
     })
   }
+
   _setResultState() {
     this.SetSafeState({
       histortyVisible: false,
@@ -208,16 +228,16 @@ class Search extends React.Component {
       suggestNoDataVisible,
       resultBarVisible,
       resultBarList,
-      resultRecommendList,
-      resultHosList,
-      resultDeptsList,
-      resultCurrent
+      resultCurrent,
+      searchVal,
+      searchList,
     } = this.state;
+    console.log(searchList)
     return (
       <div>
         <Body>
           <Input
-            ref={text => this.input = text}
+            value={searchVal}
             onChange={this.onChange}
             handleClick={this.onInputClick}
           />
@@ -234,23 +254,12 @@ class Search extends React.Component {
           <Empty
             visible={suggestNoDataVisible}
           />
-          <ResultBar
+          <Tab
             current={resultCurrent}
             visible={resultBarVisible}
-            list={resultBarList}
+            tabBarList={resultBarList}
             handleClick={this.fetchResultList}
-          />
-          <RecommendList
-            visible={resultCurrent === 'recommend'}
-            list={resultRecommendList}
-          />
-          <HosList
-            visible={resultCurrent === 'hos'}
-            list={resultHosList}
-          />
-          <DeptsList
-            visible={resultCurrent === 'depts'}
-            list={resultDeptsList}
+            searchList={searchList}
           />
         </Body>
       </div>

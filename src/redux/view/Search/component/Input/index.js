@@ -28,6 +28,15 @@ class Input extends Component {
     this.unmount = true
   }
 
+  componentWillReceiveProps(nextProps, props) {
+    if (nextProps.value && (nextProps.value !== this.state.value)) {
+      this.safeSetState({
+        value: nextProps.value,
+      });
+    }
+  }
+
+
   // 页面销毁，不能 setState
   safeSetState (config, callback) {
     if (!this.unmount) {
@@ -47,9 +56,9 @@ class Input extends Component {
     this.props.onChange(value)
   }
 
-  setValue (value) {
-    this.safeSetState({ value})
-  }
+  // setValue (value) {
+  //   this.safeSetState({ value})
+  // }
 
   render () {
     const classNameList = ['placeholder']

@@ -1,21 +1,23 @@
 import React from 'react';
-import {
-  Input,
-  HistoryList,
-  SuggestList,
-  Tab
-} from './component';
+import { Input, HistoryList, SuggestList, Tab } from './component';
 import { Body } from '../../component';
 import {
-  HISTORY_LIST,
-  SUGGEST_LIST,
   BAR_List,
   HOS_LIST,
   DETPS_List,
+  HISTORY_LIST,
+  SUGGEST_LIST,
   getRecommendList,
 } from './config';
 import { SetSafeState } from '../../decorate';
 import '../../style/index.css';
+// 引入 redux
+import { setSearchVal, setShowType } from './action';
+import { createStore } from 'redux';
+import search from './reducer';
+
+const store = createStore(search);
+let stateStore = store.getState();
 
 class Search extends React.Component {
   constructor(props) {
@@ -23,25 +25,24 @@ class Search extends React.Component {
     // 页面 mount 的状态
     this.unmounted = false;
     // 推荐数据
-    this.resultRecommendList = [];
+    this.recommendList = [];
     // 医院数据
-    this.resultHosList = [];
+    this.hosList = [];
     // 科室数据
-    this.resultDeptsList = [];
+    this.deptsList = [];
     // 推荐标识
-    this.resultRecommendFetched =  false;
+    this.recommendFetched = false;
     // 科室标识
-    this.resultDeptsFetched = false;
+    this.deptsFetched = false;
     // 医院标识
-    this.resultHosFetched = false;
-
+    this.hosFetched = false;
     this.state = {
       // 搜索值
-      searchVal: '',
+      searchVal: stateStore.searchVal,
       // 显示类型: 'HISTORY: 历史记录, SUGGEST: 搜索建议, SEARCH: 搜索结果
-      showType: '',
+      showType: stateStore.showType,
       // 历史记录列表
-      historyData: [],
+      historyData: HISTORY_LIST,
       // 搜素建议列表
       suggestListData: [],
       // 选中的 tabBar key
@@ -76,6 +77,7 @@ class Search extends React.Component {
 
   componentWillUnmount() {
     this.unmounted = true;
+    this.unsubscribe();
   }
 
   @SetSafeState()
@@ -84,21 +86,19 @@ class Search extends React.Component {
   }
 
   init() {
-    setTimeout(() => {
+    // 订阅 store 的变化
+    this.unsubscribe = store.subscribe(() =>{
+      stateStore = store.getState();
       this.SetSafeState({
-        // 搜索历史
-        showType: 'HISTORY',
-        // 历史数据
-        historyData: HISTORY_LIST,
+        searchVal: stateStore.searchVal,
+        showType: stateStore.showType,
       });
-    }, 0)
+    });
   }
 
-  // 点击历史，搜索建议同步搜索框内容
+  // 设置 Input 的 value
   setInputValue(value) {
-    this.SetSafeState({
-      searchVal: value,
-    });
+    store.dispatch(setSearchVal(value));
   }
 
   // 点击历史记录
@@ -113,20 +113,20 @@ class Search extends React.Component {
     this.fetchSearchResult(item)
   }
 
+  // 获取搜索结果
   fetchSearchResult(item) {
+    // step1: 更新 Input 的 value
     this.setInputValue(item.text)
-    this._fetchResultBar()
+    // step2: 拉取TabBar数据
+    this._fetchTabBarResult()
   }
 
-  _fetchResultBar() {
+  // 先获取 TabBar 数据
+  _fetchTabBarResult() {
     setTimeout(() => {
       this.SetSafeState({
         tabBarList: BAR_List
-      })
-      // fetch 里表中的第一个数据
-      setTimeout(() => {
-        this.fetchResultList(BAR_List[0])
-      })
+      }, this.fetchResultList(BAR_List[0]))
     }, 300)
   }
 
@@ -134,42 +134,42 @@ class Search extends React.Component {
   // 1 设置选中 item
   // 2 fetch list
   fetchResultList({key}) {
-    if(this.current === key) return;
+    const type = key;
     // 已经 fetch 的直接显示
-
-
-    let listKey = '';
-    switch (key) {
-      case 'hos':
-        listKey = 'resultHos'
-        this.resultHosList = HOS_LIST;
-        break;
-      case 'depts':
-        listKey = 'resultDepts'
-        this.resultDeptsList = DETPS_List;
-        break;
-      default:
-        listKey = 'resultRecommend'
-        this.resultRecommendList = getRecommendList();
-    }
-
-    if (this[listKey + 'Fetched']) {
+    if (this[type + 'Fetched']) {
+      store.dispatch(setShowType('SEARCH'));
       this.SetSafeState({
-        showType: 'SEARCH',
+        // showType: 'SEARCH',
         resultCurrent: key,
-        searchList: this[listKey + 'List']
+        searchList: this[type + 'List']
       });
+      console.log(type, 'cache')
       return;
     }
 
+    switch (key) {
+      // 医院
+      case 'hos':
+        this.hosList = HOS_LIST;
+        break;
+      // 科室
+      case 'depts':
+        this.deptsList = DETPS_List;
+        break;
+      default:
+        // 推荐
+        this.recommendList = getRecommendList();
+    }
+
     setTimeout(() => {
-      this[listKey + 'Fetched'] = true;
+      store.dispatch(setShowType('SEARCH'));
+      this[type + 'Fetched'] = true;
       this.SetSafeState({
-        showType: 'SEARCH',
-        searchList: this[listKey + 'List'],
+        // showType: 'SEARCH',
+        searchList: this[type + 'List'],
         resultCurrent: key
       })
-      console.log(listKey, 'fetched')
+      console.log(type, 'fetched')
     }, 300)
   }
 
@@ -188,21 +188,18 @@ class Search extends React.Component {
     }
     // 空显示历史数据
     if (!key) {
-      this.SetSafeState({
-        showType: 'HISTORY',
-      })
+      store.dispatch(setShowType('HISTORY'));
       return
     }
 
     this.timer = setTimeout(() => {
-      setTimeout(() => {
-        const data = Math.random() > 0.1 ? SUGGEST_LIST : []
-        this.SetSafeState({
-          showType: 'SUGGEST',
-          suggestListData: data,
-        })
-      }, 90)
-    }, 200)
+      const data = Math.random() > 0.1 ? SUGGEST_LIST : [];
+      store.dispatch(setShowType('SUGGEST'));
+      this.SetSafeState({
+        // showType: 'SUGGEST',
+        suggestListData: data,
+      })
+    }, 100)
   }
 
   // 当在 result 显示的情况下，点击输入框，应该显示 suggest
@@ -212,9 +209,10 @@ class Search extends React.Component {
     if(!this.state.resultCurrent) return
     const hasSuggest = this.state.suggestListData.length > 0
     if (hasSuggest) {
-      this.SetSafeState({
-        showType: 'SUGGEST',
-      });
+      store.dispatch(setShowType('SUGGEST'));
+      // this.SetSafeState({
+      //   showType: 'SUGGEST',
+      // });
     }
   }
 
@@ -235,8 +233,9 @@ class Search extends React.Component {
       // 显示类型
       showType,
     } = this.state;
-    console.log(this.state)
-    console.log('========')
+    console.log('state:', this.state)
+    console.log('store:', stateStore)
+    console.log('===================')
     return (
       <div>
         <Body>

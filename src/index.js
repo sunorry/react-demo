@@ -1,9 +1,10 @@
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Search } from './view';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './view/App'
+import registerServiceWorker from './registerServiceWorker'
 
 ReactDOM.render(
-  <Search />,
+  <App />,
   document.getElementById('root')
 )
+registerServiceWorker()

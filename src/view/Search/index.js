@@ -12,12 +12,15 @@ import {
 import { SetSafeState } from '../../decorate';
 import '../../style/index.css';
 // 引入 redux
-import { setSearchVal, setShowType } from './action';
+import action from '../../action';
 import { createStore } from 'redux';
-import search from './reducer';
+import reducer from '../../reducer';
 
-const store = createStore(search);
-let stateStore = store.getState();
+const { setSearchVal, setShowType } = action.Search;
+
+const store = createStore(reducer);
+
+let stateStore = store.getState() && store.getState().Search;
 
 class Search extends React.Component {
   constructor(props) {
@@ -88,7 +91,7 @@ class Search extends React.Component {
   init() {
     // 订阅 store 的变化
     this.unsubscribe = store.subscribe(() =>{
-      stateStore = store.getState();
+      stateStore = store.getState() && store.getState().Search;
       this.SetSafeState({
         searchVal: stateStore.searchVal,
         showType: stateStore.showType,

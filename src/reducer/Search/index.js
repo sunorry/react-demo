@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux'
-import { UPDATE_SEARCH_VAL, UPDATE_SHOW_TYPE } from './action'
+
+// 搜索框的值
+const UPDATE_SEARCH_VAL = 'UPDATE_SEARCH_VAL';
+// 搜索类型
+const UPDATE_SHOW_TYPE = 'UPDATE_SHOW_TYPE';
 
 function searchVal(state = '', action) {
   switch (action.type) {

@@ -5,7 +5,6 @@ const fakeAuth = {
         setTimeout(cb, 100)
     },
     signout(cb) {
-        this.test = 3
         this.isAuthenticated = false
         setTimeout(cb, 100)
     }

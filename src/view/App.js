@@ -7,12 +7,13 @@ import { Search, Login, PrivateRoute } from './index';
 
 // Map Redux state to component props
 function mapStateToProps(state) {
-  console.log('index state:', state)
+  console.log('search state:', state)
   return state.Search;
 }
 
 // Map Redux actions to component props
 function mapDispatchToProps(dispatch) {
+  console.log('search action:', action.Search)
   return  bindActionCreators(action.Search, dispatch)
 }
 

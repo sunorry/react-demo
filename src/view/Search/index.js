@@ -11,16 +11,6 @@ import {
 } from './config';
 import { SetSafeState } from '../../decorate';
 import '../../style/index.css';
-// 引入 redux
-// import action from '../../action';
-// import { createStore } from 'redux';
-// import reducer from '../../reducer';
-
-// const { setSearchVal, setShowType } = action.Search;
-
-// const store = createStore(reducer);
-
-// let stateStore = store.getState() && store.getState().Search;
 
 class Search extends React.Component {
   constructor(props) {
@@ -41,9 +31,9 @@ class Search extends React.Component {
     this.hosFetched = false;
     this.state = {
       // 搜索值
-      searchVal: '',
+      // searchVal: '',
       // 显示类型: 'HISTORY: 历史记录, SUGGEST: 搜索建议, SEARCH: 搜索结果
-      showType: 'HISTORY',
+      // showType: 'HISTORY',
       // 历史记录列表
       historyData: HISTORY_LIST,
       // 搜素建议列表
@@ -89,14 +79,6 @@ class Search extends React.Component {
   }
 
   init() {
-    // 订阅 store 的变化
-    // this.unsubscribe = store.subscribe(() =>{
-    //   stateStore = store.getState() && store.getState().Search;
-    //   this.SetSafeState({
-    //     searchVal: stateStore.searchVal,
-    //     showType: stateStore.showType,
-    //   });
-    // });
   }
 
   // 设置 Input 的 value
@@ -104,7 +86,6 @@ class Search extends React.Component {
     // this.setState({
     //   searchVal: value,
     // })
-    // store.dispatch(setSearchVal(value));
     this.props.setSearchVal(value);
   }
 
@@ -144,9 +125,9 @@ class Search extends React.Component {
     const type = key;
     // 已经 fetch 的直接显示
     if (this[type + 'Fetched']) {
-      // store.dispatch(setShowType('SEARCH'));
+      this.props.setShowType('SEARCH');
       this.SetSafeState({
-        showType: 'SEARCH',
+        // showType: 'SEARCH',
         resultCurrent: key,
         searchList: this[type + 'List']
       });
@@ -169,10 +150,10 @@ class Search extends React.Component {
     }
 
     setTimeout(() => {
-      // store.dispatch(setShowType('SEARCH'));
+      this.props.setShowType('SEARCH');
       this[type + 'Fetched'] = true;
       this.SetSafeState({
-        showType: 'SEARCH',
+        // showType: 'SEARCH',
         searchList: this[type + 'List'],
         resultCurrent: key
       })
@@ -195,18 +176,18 @@ class Search extends React.Component {
     }
     // 空显示历史数据
     if (!key) {
-      // store.dispatch(setShowType('HISTORY'));
+      this.props.setShowType('HISTORY');
       this.SetSafeState({
-        showType: 'HISTORY',
+        // showType: 'HISTORY',
       })
       return
     }
 
     this.timer = setTimeout(() => {
       const data = Math.random() > 0.1 ? SUGGEST_LIST : [];
-      // store.dispatch(setShowType('SUGGEST'));
+      this.props.setShowType('SUGGEST');
       this.SetSafeState({
-        showType: 'SUGGEST',
+        // showType: 'SUGGEST',
         suggestListData: data,
       })
     }, 100)
@@ -219,10 +200,10 @@ class Search extends React.Component {
     if(!this.state.resultCurrent) return
     const hasSuggest = this.state.suggestListData.length > 0
     if (hasSuggest) {
-      // store.dispatch(setShowType('SUGGEST'));
-      this.SetSafeState({
-        showType: 'SUGGEST',
-      });
+      this.props.setShowType('SUGGEST');
+      // this.SetSafeState({
+      //   showType: 'SUGGEST',
+      // });
     }
   }
 
@@ -237,12 +218,14 @@ class Search extends React.Component {
       // 存在的 tabbar
       resultCurrent,
       // 搜索关键字
-      searchVal,
+      // searchVal,
       // 数据列表
       searchList,
       // 显示类型
-      showType,
+      // showType,
     } = this.state;
+
+    const { searchVal, showType } = this.props;
     console.log('state:', this.state)
     console.log('props:', this.props)
     console.log('===================')
@@ -250,7 +233,7 @@ class Search extends React.Component {
       <div>
         <Body>
           <Input
-            value={this.props.Search.searchVal}
+            value={searchVal}
             onChange={this.onChange}
             handleClick={this.onInputClick}
           />

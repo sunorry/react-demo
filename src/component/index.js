@@ -5,3 +5,5 @@
 export { default as ClickMe } from './ClickMe';
 // Body 组件，控制页面正文
 export { default as Body } from './Body';
+
+export { default as QueryLink } from './QueryLink'

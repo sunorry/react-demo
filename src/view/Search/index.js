@@ -1,5 +1,7 @@
 import React from 'react';
 import { Input, HistoryList, SuggestList, Tab } from './component';
+import queryString from 'query-string'
+
 import { Body } from '../../component';
 import {
   BAR_List,
@@ -217,6 +219,8 @@ class Search extends React.Component {
   }
 
   render () {
+    const { search } = this.props.location
+    console.log(queryString.parse(search))
     const {
       // 历史数据
       historyData,

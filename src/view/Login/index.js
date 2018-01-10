@@ -1,7 +1,8 @@
 import React from 'react'
-import { Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import fakeAuth from '../../../src/utils/fakeAuth'
+import AuthButton from './AuthButton'
 
 class Login extends React.Component {
   constructor (props) {
@@ -28,10 +29,11 @@ class Login extends React.Component {
       }
 
       return (
-          <div>
+         fakeAuth.isAuthenticated ? <AuthButton /> :
+            (<div>
               <p>You must log in to view the page at {from.pathname}</p>
               <button onClick={this.login}>Log in</button>
-          </div>
+          </div>) 
       )
   }
 }

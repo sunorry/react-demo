@@ -70,7 +70,7 @@ class Search extends React.Component {
 
   componentWillUnmount() {
     this.unmounted = true;
-    this.unsubscribe();
+    this.unsubscribe && this.unsubscribe();
   }
 
   @SetSafeState()

@@ -11,6 +11,6 @@ function userInfo(state = {userId: 12, userName: 'slogeor'}, action) {
   }
 }
 
-export default  combineReducers({
+export default combineReducers({
   userInfo,
 })

@@ -33,7 +33,6 @@ function wrapComponent(componentRef) {
 }
 
 
-
 // Connected Component
 const SearchWrap = wrapComponent(Search);
 

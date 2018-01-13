@@ -2,26 +2,40 @@ import React from 'react'
 import { HashRouter as Router, Route, Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import action from '../action';
+// import action from '../action';
 import { Search, Login, PrivateRoute } from './index';
 
-// Map Redux state to component props
-function mapStateToProps(state) {
-  console.log('search state:', state)
-  return state.Search;
+function wrapComponent(componentRef) {
+  console.log('qqq:', componentRef.reduxPlugin)
+  const reduxPlugin = componentRef.reduxPlugin;
+
+  const mapStateToProps = (state, ownProps) => {
+    console.log('search state:', state)
+    console.log('ownProps:', ownProps);
+    const storeArr = reduxPlugin.mapStateToProps;
+    const newState = {};
+    for (let i = 0, len = storeArr.length; i < len; i++) {
+      const item = storeArr[i];
+      const arr = item.split('.');
+      newState[arr[1]]  = state[arr[0]][arr[1]];
+    }
+    return newState;
+  }
+
+  const mapDispatchToProps = (dispatch) => {
+    return  bindActionCreators(reduxPlugin.mapDispatchToProps, dispatch)
+  }
+
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(componentRef)
 }
 
-// Map Redux actions to component props
-function mapDispatchToProps(dispatch) {
-  console.log('search action:', action.Search)
-  return  bindActionCreators(action.Search, dispatch)
-}
+
 
 // Connected Component
-const SearchWrap = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Search)
+const SearchWrap = wrapComponent(Search);
 
 const Home = () => (
   <Router>

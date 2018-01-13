@@ -11,6 +11,9 @@ import {
 } from './config';
 import { SetSafeState } from '../../decorate';
 import '../../style/index.css';
+import action from '../../action';
+
+const {  setSearchVal, setShowType, } = action.Search;
 
 class Search extends React.Component {
   constructor(props) {
@@ -62,6 +65,17 @@ class Search extends React.Component {
     this.onInputClick = this.onInputClick.bind(this)
     // 根据关键字搜索
     this.fetchSearchResult = this.fetchSearchResult.bind(this);
+  }
+  static reduxPlugin = {
+    mapStateToProps: [
+      'Search.searchVal',
+      'Search.showType',
+      'User.userInfo',
+    ],
+    mapDispatchToProps: {
+      setSearchVal,
+      setShowType,
+    }
   }
 
   componentWillMount() {
